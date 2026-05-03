@@ -66,8 +66,9 @@
 
 /* ========== TYPING ANIMATION ========== */
 (function () {
-  const roles = ['Cybersecurity Student', 'CTF Player', 'Red Teamer', 'Bug Hunter'];
   const el = document.getElementById('typed-text');
+  if (!el) return;
+  const roles = ['Cybersecurity Student', 'CTF Player', 'Red Teamer', 'Bug Hunter'];
   let roleIdx = 0, charIdx = 0, deleting = false;
 
   function type() {
@@ -140,17 +141,20 @@
 })();
 
 /* ========== CONTACT FORM ========== */
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const btn = this.querySelector('button[type="submit"]');
-  btn.textContent = '✅ Message Sent!';
-  btn.style.background = 'var(--accent-green)';
-  setTimeout(() => {
-    btn.textContent = '🚀 Send Message';
-    btn.style.background = '';
-    this.reset();
-  }, 2500);
-});
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.textContent = '✅ Message Sent!';
+    btn.style.background = 'var(--accent-green)';
+    setTimeout(() => {
+      btn.textContent = '🚀 Send Message';
+      btn.style.background = '';
+      this.reset();
+    }, 2500);
+  });
+}
 
 /* ========== ACTIVE NAV LINK HIGHLIGHT ========== */
 (function () {
