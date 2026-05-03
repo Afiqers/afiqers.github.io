@@ -107,15 +107,29 @@
 
 /* ========== SCROLL REVEAL ========== */
 (function () {
+  const revealEls = document.querySelectorAll('.reveal, .timeline-item');
+  if (!revealEls.length) return;
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  }, { threshold: 0.05 });
 
-  document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+  revealEls.forEach(el => observer.observe(el));
+
+  // Fallback: reveal any elements already in viewport on load
+  setTimeout(() => {
+    revealEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('visible');
+      }
+    });
+  }, 300);
 })();
 
 /* ========== STAT COUNTER ========== */
