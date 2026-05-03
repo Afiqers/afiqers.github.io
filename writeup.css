@@ -1,5 +1,12 @@
 /* ========== WRITEUP PAGE STYLES ========== */
 
+/* Force all content visible on writeup pages */
+.reveal,
+.timeline-item {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* Back link */
 .back-link {
   font-family: var(--font-mono);
