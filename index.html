@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muhammad Afiq — Cybersecurity Portfolio</title>
+  <meta name="description" content="Cybersecurity student & CTF player. Explore my CTF writeups, certification journey, and security projects.">
+  <meta name="keywords" content="cybersecurity, CTF, portfolio, penetration testing, security">
+  <meta name="author" content="Muhammad Afiq Bin Mohd Nizam">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+</head>
+<body>
+
+  <!-- Particle Background -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">afiq<span>@portfolio</span>:~$</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#writeups">CTF Writeups</a>
+      <a href="#certs">Certifications</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-greeting">// Hello, World! I'm</p>
+      <h1 class="hero-name">Muhammad <span class="highlight">Afiq</span></h1>
+      <div class="hero-role">
+        <span id="typed-text"></span><span class="cursor"></span>
+      </div>
+      <p class="hero-summary">
+        Cybersecurity student with hands-on experience in CTF competitions, web application security testing, and network analysis. Passionate about offensive security and threat detection.
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">⚡ View Projects</a>
+        <a href="#contact" class="btn btn-outline">📬 Contact Me</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number" data-target="120">0</div>
+          <div class="stat-label">Labs Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Top 4%</div>
+          <div class="stat-label">TryHackMe Global</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">🏆</div>
+          <div class="stat-label">CTF Champion</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section id="about">
+    <div class="section-header">
+      <p class="section-label">// 01. About Me</p>
+      <h2 class="section-title">Who Am I?</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-image-wrapper">
+        <div class="about-image">
+          <div class="placeholder-text">[ Your Photo Here ]<br><br>Replace this with your<br>profile image</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <p>
+          I'm a <strong>Cybersecurity</strong> student at Universiti Utara Malaysia, currently pursuing my Bachelor of Science in Computer Science with a CGPA of 3.71. My journey in cybersecurity began with a curiosity for how systems can be broken — and more importantly, how they can be defended.
+        </p>
+        <p>
+          I thrive in <strong>Capture The Flag (CTF)</strong> competitions, where I've honed my skills in web exploitation, network forensics, and vulnerability assessment. I'm ranked in the <strong>Top 4% globally on TryHackMe</strong> with 120+ completed labs, and I'm a champion of the <strong>NERaCA 3.0 CTF</strong>.
+        </p>
+        <p>
+          My focus areas span offensive security, red teaming, and building tools that make the digital world safer.
+        </p>
+        <div class="about-focus">
+          <div class="focus-card">
+            <div class="icon">🚩</div>
+            <div class="label">CTF Player</div>
+          </div>
+          <div class="focus-card">
+            <div class="icon">📜</div>
+            <div class="label">Cert Hunter</div>
+          </div>
+          <div class="focus-card">
+            <div class="icon">🔧</div>
+            <div class="label">Builder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTF WRITEUPS ==================== -->
+  <section id="writeups">
+    <div class="section-header">
+      <p class="section-label">// 02. CTF Writeups</p>
+      <h2 class="section-title">Capture The Flag</h2>
+      <p class="section-subtitle">Detailed writeups from competitions and practice challenges. More coming soon!</p>
+    </div>
+    <div class="writeups-grid">
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="writeup-difficulty diff-medium">Medium</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">NERaCA 3.0</span>
+        </div>
+        <h3>SQL Injection Auth Bypass</h3>
+        <p>Exploiting a vulnerable login form using UNION-based SQL injection to bypass authentication and retrieve the flag from the database.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-network">Network</span>
+          <span class="writeup-difficulty diff-hard">Hard</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">NERaCA 3.0</span>
+        </div>
+        <h3>Packet Capture Analysis</h3>
+        <p>Analyzing a PCAP file to identify malicious traffic patterns, extract credentials from unencrypted protocols, and trace the attack chain.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="writeup-difficulty diff-easy">Easy</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">TryHackMe</span>
+        </div>
+        <h3>XSS Cookie Stealer</h3>
+        <p>Crafting a reflected XSS payload to exfiltrate session cookies from an admin panel and escalate privileges on the target web app.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-forensics">Forensics</span>
+          <span class="writeup-difficulty diff-medium">Medium</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">TryHackMe</span>
+        </div>
+        <h3>Log Analysis with Splunk</h3>
+        <p>Correlating DNS, HTTP, and authentication logs in Splunk to identify malicious domains and beaconing behavior from compromised hosts.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-crypto">Crypto</span>
+          <span class="writeup-difficulty diff-hard">Hard</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Practice</span>
+        </div>
+        <h3>RSA Key Recovery</h3>
+        <p>Recovering a weak RSA private key by factoring the modulus using Fermat's factorization method to decrypt the encrypted flag.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+      <div class="writeup-card reveal">
+        <div class="writeup-meta">
+          <span class="writeup-tag tag-misc">Misc</span>
+          <span class="writeup-difficulty diff-easy">Easy</span>
+          <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Practice</span>
+        </div>
+        <h3>Steganography Challenge</h3>
+        <p>Extracting hidden data from image files using steganography tools and analyzing file headers to uncover concealed messages.</p>
+        <a href="#" class="writeup-link">Read Writeup →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CERTIFICATIONS ==================== -->
+  <section id="certs">
+    <div class="section-header">
+      <p class="section-label">// 03. Certification Journey</p>
+      <h2 class="section-title">Certs & Training</h2>
+      <p class="section-subtitle">My journey through certifications and hands-on training platforms.</p>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot completed"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Completed</div>
+          <h3>Cisco CCNA</h3>
+          <p>Networking fundamentals, routing & switching, IP addressing, network security concepts, and automation basics.</p>
+          <span class="timeline-badge">✅ Certified</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot completed"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Completed</div>
+          <h3>Web-RTA (Web Red Team Analyst)</h3>
+          <p>Advanced web application security testing, OWASP Top 10 exploitation, and red team methodology for web environments.</p>
+          <span class="timeline-badge">✅ Certified</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot completed"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Ongoing • Top 4% Globally</div>
+          <h3>TryHackMe — 120+ Labs</h3>
+          <p>Completed labs covering web exploitation, Active Directory attacks, SOC Analyst workflows, and privilege escalation — with skills directly transferable to real engagements.</p>
+          <span class="timeline-badge">🏅 Top 4% Global Ranking</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot in-progress"></div>
+        <div class="timeline-content">
+          <div class="timeline-date">In Progress</div>
+          <h3>Next Certification...</h3>
+          <p>Always leveling up. Stay tuned for the next certification in the pipeline!</p>
+          <span class="timeline-badge">🔄 Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== PROJECTS ==================== -->
+  <section id="projects">
+    <div class="section-header">
+      <p class="section-label">// 04. Projects</p>
+      <h2 class="section-title">What I've Built</h2>
+      <p class="section-subtitle">Security tools, competitions, and applications I've worked on.</p>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-icon">🏆</div>
+        <h3>NERaCA 3.0 CTF — Champion</h3>
+        <p>Won the NERaCA 3.0 CTF competition by solving challenges across web application and networking categories. Demonstrated skills in vulnerability exploitation and network analysis.</p>
+        <div class="project-tags">
+          <span>Web Exploitation</span>
+          <span>Networking</span>
+          <span>CTF</span>
+        </div>
+        <div class="project-links">
+          <a href="#">🔗 Details</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🤖</div>
+        <h3>NLP Mental Health Chatbot</h3>
+        <p>Designed and developed an NLP-based chatbot to detect and classify user sentiment for mental health support. Trained and evaluated machine learning models for multi-class sentiment classification.</p>
+        <div class="project-tags">
+          <span>Python</span>
+          <span>NLP</span>
+          <span>Machine Learning</span>
+          <span>BERT</span>
+        </div>
+        <div class="project-links">
+          <a href="#">🔗 GitHub</a>
+          <a href="#">🌐 Demo</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🔬</div>
+        <h3>PCAP & Log Analysis</h3>
+        <p>Analyzed network traffic with Wireshark and correlated DNS, HTTP and authentication logs in Splunk to identify malicious domains and beaconing behaviour.</p>
+        <div class="project-tags">
+          <span>Wireshark</span>
+          <span>Splunk</span>
+          <span>Network Forensics</span>
+        </div>
+        <div class="project-links">
+          <a href="#">🔗 Details</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">🎯</div>
+        <h3>TryHackMe — Top 4% Global</h3>
+        <p>Completed 120+ security labs covering web exploitation, Active Directory attacks, SOC Analyst — hands-on skills directly transferable to real engagements.</p>
+        <div class="project-tags">
+          <span>Web Exploitation</span>
+          <span>Active Directory</span>
+          <span>SOC</span>
+        </div>
+        <div class="project-links">
+          <a href="https://tryhackme.com" target="_blank">🔗 TryHackMe Profile</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SKILLS ==================== -->
+  <section id="skills">
+    <div class="section-header">
+      <p class="section-label">// 05. Skills</p>
+      <h2 class="section-title">Tech Stack & Skills</h2>
+    </div>
+    <div class="skills-categories">
+
+      <div class="skill-category reveal">
+        <h3>🔧 Security Tools</h3>
+        <div class="skill-list">
+          <div class="skill-item"><span class="dot"></span>Splunk</div>
+          <div class="skill-item"><span class="dot"></span>Wireshark</div>
+          <div class="skill-item"><span class="dot"></span>Nessus</div>
+          <div class="skill-item"><span class="dot"></span>Burp Suite</div>
+        </div>
+      </div>
+
+      <div class="skill-category reveal">
+        <h3>🛡️ Security Domains</h3>
+        <div class="skill-list">
+          <div class="skill-item"><span class="dot"></span>Web Security</div>
+          <div class="skill-item"><span class="dot"></span>Incident Response</div>
+          <div class="skill-item"><span class="dot"></span>Vulnerability Assessment</div>
+        </div>
+      </div>
+
+      <div class="skill-category reveal">
+        <h3>💻 Systems</h3>
+        <div class="skill-list">
+          <div class="skill-item"><span class="dot"></span>Windows (AD)</div>
+          <div class="skill-item"><span class="dot"></span>Linux</div>
+        </div>
+      </div>
+
+      <div class="skill-category reveal">
+        <h3>⌨️ Programming</h3>
+        <div class="skill-list">
+          <div class="skill-item"><span class="dot"></span>Python</div>
+          <div class="skill-item"><span class="dot"></span>Bash</div>
+          <div class="skill-item"><span class="dot"></span>Java</div>
+        </div>
+      </div>
+
+      <div class="skill-category reveal">
+        <h3>📜 Certifications</h3>
+        <div class="skill-list">
+          <div class="skill-item"><span class="dot"></span>CCNA</div>
+          <div class="skill-item"><span class="dot"></span>Web-RTA</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== EDUCATION ==================== -->
+  <section id="education">
+    <div class="section-header">
+      <p class="section-label">// 06. Education</p>
+      <h2 class="section-title">Academic Background</h2>
+    </div>
+    <div class="education-cards">
+
+      <div class="education-card reveal">
+        <div class="year">Oct 2023 — Present</div>
+        <h3>Bachelor of Science in Computer Science</h3>
+        <div class="school">Universiti Utara Malaysia, Sintok, Kedah</div>
+        <div class="details">Majoring in Cybersecurity</div>
+        <div class="cgpa-badge">CGPA: 3.71</div>
+      </div>
+
+      <div class="education-card reveal">
+        <div class="year">2022 — 2023</div>
+        <h3>Foundation in Physical Science</h3>
+        <div class="school">Universiti Malaya, Kuala Lumpur</div>
+        <div class="details">Foundation programme</div>
+        <div class="cgpa-badge">CGPA: 3.40</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section id="contact">
+    <div class="section-header">
+      <p class="section-label">// 07. Contact</p>
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-subtitle">Have a question or want to collaborate? Drop me a message!</p>
+    </div>
+    <div class="contact-wrapper">
+      <div class="contact-terminal">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">afiq@portfolio ~ contact</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">afiq@portfolio:~$</span> <span class="cmd">cat contact_info.txt</span>
+          </div>
+          <div class="terminal-line">
+            📧 Email: <a href="mailto:afiqq2801@gmail.com" style="color:var(--accent-cyan)">afiqq2801@gmail.com</a>
+          </div>
+          <div class="terminal-line">
+            📱 Phone: (+60)11-2868 2517
+          </div>
+          <div class="terminal-line">
+            🔗 LinkedIn: <a href="https://www.linkedin.com/in/muhammad-afiq-nizam" target="_blank" style="color:var(--accent-cyan)">muhammad-afiq-nizam</a>
+          </div>
+          <div class="terminal-line" style="margin-top:24px;">
+            <span class="prompt">afiq@portfolio:~$</span> <span class="cmd">./send_message.sh</span>
+          </div>
+          <form class="contact-form" id="contactForm">
+            <div class="form-group">
+              <label for="name">name:</label>
+              <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">email:</label>
+              <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="message">message:</label>
+              <textarea id="message" rows="4" placeholder="Your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self:flex-start">
+              🚀 Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="contact-links">
+        <a href="https://github.com/afiqers" target="_blank" class="contact-link">
+          ⚡ GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/muhammad-afiq-nizam" target="_blank" class="contact-link">
+          💼 LinkedIn
+        </a>
+        <a href="mailto:afiqq2801@gmail.com" class="contact-link">
+          📧 Email
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
