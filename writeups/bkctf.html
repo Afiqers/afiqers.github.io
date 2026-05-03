@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BKCTF Writeup — Muhammad Afiq</title>
-  <meta name="description" content="CTF writeup for BKCTF competition. Challenges solved: My First Blog (IDOR), Be A Legend (Race Condition).">
+  <title>BKCTF Writeup — afiqers</title>
+  <meta name="description"
+    content="CTF writeup for BKCTF competition. Challenges solved: My First Blog (IDOR), Be A Legend (Race Condition).">
   <meta name="author" content="Muhammad Afiq Bin Mohd Nizam">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../writeup.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚩</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚩</text></svg>">
 </head>
+
 <body>
 
   <canvas id="particles-canvas"></canvas>
@@ -52,10 +56,7 @@
 
       <!-- Scoreboard screenshot placeholder -->
       <div class="scoreboard-img reveal">
-        <div class="img-placeholder">
-          <span>[ BKCTF Scoreboard Screenshot ]</span>
-          <p>Replace with your actual scoreboard image</p>
-        </div>
+        <img src="images/bkctf/scoreboard.png" alt="BKCTF Scoreboard">
       </div>
     </div>
   </section>
@@ -79,27 +80,27 @@
 
       <div class="challenge-body">
         <h3 class="step-heading">📝 Overview</h3>
-        <p>This challenge presented a blog web application. The goal was to find and exploit a vulnerability to retrieve the flag.</p>
+        <p>This challenge presented a blog web application. The goal was to find and exploit a vulnerability to retrieve
+          the flag.</p>
 
         <h3 class="step-heading">🔍 Reconnaissance</h3>
         <p>Upon visiting the web application, we're presented with a simple blog interface:</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Blog Web Application Screenshot ]</span>
-            <p>The main page of the blog application</p>
-          </div>
+          <img src="images/bkctf/blog-main.png" alt="Blog web application main page">
         </div>
 
         <h3 class="step-heading">🐛 Vulnerability Discovery — IDOR</h3>
-        <p>I noticed an <strong>IDOR (Insecure Direct Object Reference)</strong> vulnerability. Navigating to <code>/blog/3</code> revealed a page that had been "deleted." Inspecting the page source code revealed some interesting HTML comments:</p>
+        <p>I noticed an <strong>IDOR (Insecure Direct Object Reference)</strong> vulnerability. Navigating to
+          <code>/blog/3</code> revealed a page that had been "deleted." Inspecting the page source code revealed some
+          interesting HTML comments:</p>
 
         <div class="code-block">
           <div class="code-header">
             <span class="code-lang">HTML</span>
             <span class="code-file">Source: /blog/3</span>
           </div>
-<pre><code>&lt;!-- i had to delete this bc it has my personal info on it :( --&gt;
+          <pre><code>&lt;!-- i had to delete this bc it has my personal info on it :( --&gt;
 
 &lt;!-- for documents in the 'other' folder only people with the API key has access --&gt;
 
@@ -109,19 +110,21 @@
         <p>Key findings from the source code:</p>
         <ul class="finding-list">
           <li>The blog post was deleted because it contained personal information</li>
-          <li>There's an <strong>attachment endpoint</strong> that takes a <code>file</code> parameter and an <code>apiKey</code></li>
+          <li>There's an <strong>attachment endpoint</strong> that takes a <code>file</code> parameter and an
+            <code>apiKey</code></li>
           <li>The API key is hardcoded: <code>9980426e560e3661cff195b21a4493b7</code></li>
         </ul>
 
         <h3 class="step-heading">🚀 Exploitation</h3>
-        <p>Since the <code>resume.pdf</code> file in <code>/blog/3</code> also required the API key to access, I assumed the <code>flag.txt</code> file was accessible through the same endpoint. I crafted the following URL:</p>
+        <p>Since the <code>resume.pdf</code> file in <code>/blog/3</code> also required the API key to access, I assumed
+          the <code>flag.txt</code> file was accessible through the same endpoint. I crafted the following URL:</p>
 
         <div class="code-block">
           <div class="code-header">
             <span class="code-lang">URL</span>
             <span class="code-file">Exploit Payload</span>
           </div>
-<pre><code>34.186.135.240:30000/attachment?file=/flag.txt&apiKey=9980426e560e3661cff195b21a4493b7</code></pre>
+          <pre><code>34.186.135.240:30000/attachment?file=/flag.txt&apiKey=9980426e560e3661cff195b21a4493b7</code></pre>
         </div>
 
         <p>And just like that — the flag was returned! 🎉</p>
@@ -153,7 +156,9 @@
 
       <div class="challenge-body">
         <h3 class="step-heading">📝 Overview</h3>
-        <p>The challenge requires us to defeat a dragon. The dragon has <strong>1000 HP</strong> while the player only has <strong>100 HP</strong> — making it impossible to win through normal gameplay. The challenge also provides the source code.</p>
+        <p>The challenge requires us to defeat a dragon. The dragon has <strong>1000 HP</strong> while the player only
+          has <strong>100 HP</strong> — making it impossible to win through normal gameplay. The challenge also provides
+          the source code.</p>
 
         <h3 class="step-heading">🔍 Source Code Analysis</h3>
         <p>After reviewing the source code, I spotted a vulnerability in the <code>fight_loop</code> function:</p>
@@ -163,7 +168,7 @@
             <span class="code-lang">Python</span>
             <span class="code-file">fight_loop function</span>
           </div>
-<pre><code>damage = min(player.stats.atk, 50)
+          <pre><code>damage = min(player.stats.atk, 50)
 dragon.stats.hp -= damage
 ws.send(f"You hit the dragon for {damage} damage. Dragon HP: {dragon.stats.hp:,}")
 
@@ -173,7 +178,8 @@ player.stats.hp -= dragon.stats.atk
 ws.send(f"The dragon hits you for {dragon.stats.atk:,} damage. Your HP: {player.stats.hp}")</code></pre>
         </div>
 
-        <p>The critical observation: there's a <strong>0.3 second sleep</strong> between the player's attack and the dragon's counterattack. This creates a <strong>race condition</strong> window!</p>
+        <p>The critical observation: there's a <strong>0.3 second sleep</strong> between the player's attack and the
+          dragon's counterattack. This creates a <strong>race condition</strong> window!</p>
 
         <h3 class="step-heading">🧠 Attack Strategy</h3>
         <p>The exploit leverages the save/load game mechanic combined with the race condition:</p>
@@ -205,7 +211,7 @@ ws.send(f"The dragon hits you for {dragon.stats.atk:,} damage. Your HP: {player.
             <span class="code-lang">Python</span>
             <span class="code-file">exploit.py</span>
           </div>
-<pre><code>import asyncio
+          <pre><code>import asyncio
 import websockets
 
 async def exploit():
@@ -301,4 +307,5 @@ asyncio.run(exploit())</code></pre>
 
   <script src="../script.js"></script>
 </body>
+
 </html>
