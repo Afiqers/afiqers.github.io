@@ -90,21 +90,21 @@
         </div>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/nmap-scan.png" alt="Nmap results">
+          <img src="images/hammer/nmap-scan.png" alt="Nmap results">
         </div>
 
         <h3 class="step-heading">🌐 Web Enumeration</h3>
         <p>Going to the webpage on port <code>1337</code> brings us directly to the <strong>login page</strong>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/login-page.png" alt="Nmap results">
+          <img src="images/hammer/login-page.png" alt="Nmap results">
         </div>
 
         <p>Inspecting the page source code reveals an interesting <strong>HTML comment</strong> about a naming
           convention — all directories follow the format <code>hmr_DIRECTORY_NAME</code>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/source-comment.png" alt="Nmap results">
+          <img src="images/hammer/source-comment.png" alt="Nmap results">
         </div>
 
         <h3 class="step-heading">📁 Directory Fuzzing</h3>
@@ -120,14 +120,14 @@
         </div>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/ffuf-results.png" alt="Nmap results">
+          <img src="images/hammer/ffuf-results.png" alt="Nmap results">
         </div>
 
         <p>We discover the directory <code>hmr_logs</code>. Navigating to it reveals a file named
           <code>error.logs</code> — and inside, something very useful:</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/error-logs.png" alt="Nmap results">
+          <img src="images/hammer/error-logs.png" alt="Nmap results">
         </div>
 
         <ul class="finding-list">
@@ -155,7 +155,7 @@
           The app responds by asking for a <strong>4-digit recovery code</strong>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/reset-password.png" alt="Reset password page">
+          <img src="images/hammer/reset-password.png" alt="Reset password page">
         </div>
 
         <h3 class="step-heading">🧪 Rate Limit Analysis</h3>
@@ -164,7 +164,7 @@
           <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/burp-rate-limit.png" alt="Rate limit header">
+          <img src="images/hammer/burp-rate-limit.png" alt="Rate limit header">
         </div>
 
         <p>Trying to reset the page, re-entering the email, or reopening the site all had no effect — because the
@@ -260,7 +260,7 @@ if __name__ == "__main__":
           until the correct code is found! 🎉</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/otp-found.png" alt="OTP found">
+          <img src="images/hammer/otp-found.png" alt="OTP found">
         </div>
 
         <h3 class="step-heading">🔓 First Flag</h3>
@@ -268,7 +268,7 @@ if __name__ == "__main__":
           the first flag!</p>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/thm/hammer/flag1.png" alt="Flag 1">
+          <img src="images/hammer/flag1.png" alt="Flag 1">
         </div>
 
         <div class="flag-box">
