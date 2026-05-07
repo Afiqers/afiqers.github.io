@@ -1,0 +1,170 @@
+/* ========== TRYHACKME ROOMS PAGE STYLES ========== */
+
+/* Force all content visible on THM page */
+.reveal,
+.timeline-item {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Section */
+.thm-rooms-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+}
+
+/* ========== ROOMS GRID ========== */
+.thm-rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ========== ROOM CARD (clickable) ========== */
+a.thm-room-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.thm-room-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.thm-room-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.thm-room-card:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.08);
+}
+
+.thm-room-card:hover::before {
+  opacity: 1;
+}
+
+/* Room Header */
+.thm-room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.thm-room-icon {
+  font-size: 1.6rem;
+}
+
+/* Room Name */
+.thm-room-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+/* Room Description */
+.thm-room-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+/* Room Footer */
+.thm-room-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+
+.thm-room-status {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.thm-room-status.completed {
+  color: var(--accent-green);
+}
+
+/* Extra tag colors for THM categories */
+.tag-privesc {
+  background: rgba(255, 51, 102, 0.15);
+  color: var(--accent-red);
+}
+
+.tag-recon {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--accent-purple);
+}
+
+.tag-blueteam {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--accent-cyan);
+}
+
+.tag-ad {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--accent-yellow);
+}
+
+.tag-fundamentals {
+  background: rgba(0, 255, 136, 0.15);
+  color: var(--accent-green);
+}
+
+/* ========== SUMMARY BAR ========== */
+.thm-summary-bar {
+  margin-top: 48px;
+  padding: 24px 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.thm-summary-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .thm-rooms-section {
+    padding: 40px 16px 80px;
+  }
+
+  .thm-rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .thm-summary-bar {
+    padding: 20px 16px;
+  }
+}
