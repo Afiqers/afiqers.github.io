@@ -37,7 +37,8 @@
       <a href="index.html" class="back-link">← Back to TryHackMe Rooms</a>
       <div class="ctf-badge">🏠 TRYHACKME WRITEUP</div>
       <h1 class="writeup-title">Hammer</h1>
-      <p class="writeup-tagline">"With the Hammer in hand, can you bypass the authentication mechanisms and get RCE on the system?"</p>
+      <p class="writeup-tagline">"With the Hammer in hand, can you bypass the authentication mechanisms and get RCE on
+        the system?"</p>
 
       <div class="ctf-stats">
         <div class="ctf-stat">
@@ -68,7 +69,8 @@
     <article class="challenge-block reveal" id="task-recon">
       <div class="challenge-header">
         <div class="challenge-meta-row">
-          <span class="writeup-tag tag-recon" style="background:rgba(168,85,247,0.15); color:var(--accent-purple);">Recon</span>
+          <span class="writeup-tag tag-recon"
+            style="background:rgba(168,85,247,0.15); color:var(--accent-purple);">Recon</span>
           <span class="challenge-name">Task 1 — Reconnaissance</span>
         </div>
       </div>
@@ -76,40 +78,33 @@
       <div class="challenge-body">
 
         <h3 class="step-heading">🔍 Nmap Scan</h3>
-        <p>Let's start with an Nmap scan. From the results, we can see that there are <strong>2 open ports</strong> — port <code>22</code> for SSH and port <code>1337</code> for an Apache web server.</p>
+        <p>Let's start with an Nmap scan. From the results, we can see that there are <strong>2 open ports</strong> —
+          port <code>22</code> for SSH and port <code>1337</code> for an Apache web server.</p>
 
         <div class="code-block">
           <div class="code-header">
             <span class="code-lang">Bash</span>
             <span class="code-file">Terminal</span>
           </div>
-          <pre><code>nmap -sV -sC -oN scan.txt TARGET_IP</code></pre>
+          <pre><code>nmap TARGET_IP -sS -sV -p- -T4</code></pre>
         </div>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Nmap Scan Results ]</span>
-            <p>Replace with: images/hammer/nmap-scan.png</p>
-          </div>
+          <img src="images/thm/hammer/nmap-scan.png" alt="Nmap results">
         </div>
 
         <h3 class="step-heading">🌐 Web Enumeration</h3>
         <p>Going to the webpage on port <code>1337</code> brings us directly to the <strong>login page</strong>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Login Page ]</span>
-            <p>Replace with: images/hammer/login-page.png</p>
-          </div>
+          <img src="images/thm/hammer/login-page.png" alt="Nmap results">
         </div>
 
-        <p>Inspecting the page source code reveals an interesting <strong>HTML comment</strong> about a naming convention — all directories follow the format <code>hmr_DIRECTORY_NAME</code>.</p>
+        <p>Inspecting the page source code reveals an interesting <strong>HTML comment</strong> about a naming
+          convention — all directories follow the format <code>hmr_DIRECTORY_NAME</code>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Source Code Comment ]</span>
-            <p>Replace with: images/hammer/source-comment.png</p>
-          </div>
+          <img src="images/thm/hammer/source-comment.png" alt="Nmap results">
         </div>
 
         <h3 class="step-heading">📁 Directory Fuzzing</h3>
@@ -125,19 +120,14 @@
         </div>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ ffuf Results ]</span>
-            <p>Replace with: images/hammer/ffuf-results.png</p>
-          </div>
+          <img src="images/thm/hammer/ffuf-results.png" alt="Nmap results">
         </div>
 
-        <p>We discover the directory <code>hmr_logs</code>. Navigating to it reveals a file named <code>error.logs</code> — and inside, something very useful:</p>
+        <p>We discover the directory <code>hmr_logs</code>. Navigating to it reveals a file named
+          <code>error.logs</code> — and inside, something very useful:</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ error.logs content ]</span>
-            <p>Replace with: images/hammer/error-logs.png</p>
-          </div>
+          <img src="images/thm/hammer/error-logs.png" alt="Nmap results">
         </div>
 
         <ul class="finding-list">
@@ -161,34 +151,36 @@
       <div class="challenge-body">
 
         <h3 class="step-heading">📧 Password Reset</h3>
-        <p>Navigate to <code>/reset_password.php</code> and submit the discovered email <code>tester@hammer.thm</code>. The app responds by asking for a <strong>4-digit recovery code</strong>.</p>
+        <p>Navigate to <code>/reset_password.php</code> and submit the discovered email <code>tester@hammer.thm</code>.
+          The app responds by asking for a <strong>4-digit recovery code</strong>.</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Reset Password Page ]</span>
-            <p>Replace with: images/hammer/reset-password.png</p>
-          </div>
+          <img src="images/thm/hammer/reset-password.png" alt="Reset password page">
         </div>
 
         <h3 class="step-heading">🧪 Rate Limit Analysis</h3>
-        <p>A naive brute force attempt is blocked by <strong>rate limiting</strong>. Intercepting the request with Burp Suite reveals a <code>Rate-Limit-Pending</code> header in the response. The counter starts at <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.</p>
+        <p>A naive brute force attempt is blocked by <strong>rate limiting</strong>. Intercepting the request with Burp
+          Suite reveals a <code>Rate-Limit-Pending</code> header in the response. The counter starts at
+          <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Burp Suite — Rate-Limit-Pending Header ]</span>
-            <p>Replace with: images/hammer/burp-rate-limit.png</p>
-          </div>
+          <img src="images/thm/hammer/burp-rate-limit.png" alt="Rate limit header">
         </div>
 
-        <p>Trying to reset the page, re-entering the email, or reopening the site all had no effect — because the <strong>PHPSESSID cookie</strong> remained the same. This reveals the key insight: <strong>one PHPSESSID allows exactly 8 attempts</strong> before it's exhausted.</p>
+        <p>Trying to reset the page, re-entering the email, or reopening the site all had no effect — because the
+          <strong>PHPSESSID cookie</strong> remained the same. This reveals the key insight: <strong>one PHPSESSID
+            allows exactly 8 attempts</strong> before it's exhausted.</p>
 
         <h3 class="step-heading">🧠 Bypass Strategy</h3>
-        <p>Sending a request to <code>/reset_password.php</code> with an <strong>empty PHPSESSID</strong> generates a fresh session cookie — each new session resets the rate limit counter. This means we can <strong>rotate PHPSESSID tokens</strong> to brute force all 10,000 possible 4-digit OTP codes.</p>
+        <p>Sending a request to <code>/reset_password.php</code> with an <strong>empty PHPSESSID</strong> generates a
+          fresh session cookie — each new session resets the rate limit counter. This means we can <strong>rotate
+            PHPSESSID tokens</strong> to brute force all 10,000 possible 4-digit OTP codes.</p>
 
         <div class="attack-flow">
           <div class="flow-step">
             <div class="flow-number">1</div>
-            <div class="flow-text">POST to <code>/reset_password.php</code> with empty cookie → receive fresh PHPSESSID</div>
+            <div class="flow-text">POST to <code>/reset_password.php</code> with empty cookie → receive fresh PHPSESSID
+            </div>
           </div>
           <div class="flow-step">
             <div class="flow-number">2</div>
@@ -264,23 +256,19 @@ if __name__ == "__main__":
     brute_force_otp()</code></pre>
         </div>
 
-        <p>Running the script cycles through all possible OTP codes, rotating sessions to stay under the rate limit — until the correct code is found! 🎉</p>
+        <p>Running the script cycles through all possible OTP codes, rotating sessions to stay under the rate limit —
+          until the correct code is found! 🎉</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Script Output — OTP Found ]</span>
-            <p>Replace with: images/hammer/otp-found.png</p>
-          </div>
+          <img src="images/thm/hammer/otp-found.png" alt="OTP found">
         </div>
 
         <h3 class="step-heading">🔓 First Flag</h3>
-        <p>After resetting the password and logging in with the new credentials, we land on the dashboard and capture the first flag!</p>
+        <p>After resetting the password and logging in with the new credentials, we land on the dashboard and capture
+          the first flag!</p>
 
         <div class="screenshot-placeholder reveal">
-          <div class="img-placeholder">
-            <span>[ Dashboard — First Flag ]</span>
-            <p>Replace with: images/hammer/flag1.png</p>
-          </div>
+          <img src="images/thm/hammer/flag1.png" alt="Flag 1">
         </div>
 
         <div class="flag-box">
@@ -312,7 +300,8 @@ if __name__ == "__main__":
       <div class="challenge-body">
 
         <h3 class="step-heading">💻 Command Execution</h3>
-        <p>The dashboard provides a command execution interface. Most commands are blocked — however, <code>ls</code> works, confirming there is some form of command filtering in place.</p>
+        <p>The dashboard provides a command execution interface. Most commands are blocked — however, <code>ls</code>
+          works, confirming there is some form of command filtering in place.</p>
 
         <!-- Add your RCE content below -->
         <div class="takeaway-box" style="border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.04);">
