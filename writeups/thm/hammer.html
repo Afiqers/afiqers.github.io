@@ -120,11 +120,12 @@
         </div>
 
         <div class="screenshot-placeholder reveal">
-          <img src="images/hammer/ffuf-results.png" alt="Nmap results">
+          <img src="images/hammer/ffuf-result.png" alt="ffuf results">
         </div>
 
         <p>We discover the directory <code>hmr_logs</code>. Navigating to it reveals a file named
-          <code>error.logs</code> — and inside, something very useful:</p>
+          <code>error.logs</code> — and inside, something very useful:
+        </p>
 
         <div class="screenshot-placeholder reveal">
           <img src="images/hammer/error-logs.png" alt="Nmap results">
@@ -161,7 +162,8 @@
         <h3 class="step-heading">🧪 Rate Limit Analysis</h3>
         <p>A naive brute force attempt is blocked by <strong>rate limiting</strong>. Intercepting the request with Burp
           Suite reveals a <code>Rate-Limit-Pending</code> header in the response. The counter starts at
-          <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.</p>
+          <strong>8</strong> and decreases with each attempt — once it reaches 0, the session is exhausted.
+        </p>
 
         <div class="screenshot-placeholder reveal">
           <img src="images/hammer/burp-rate-limit.png" alt="Rate limit header">
@@ -169,7 +171,8 @@
 
         <p>Trying to reset the page, re-entering the email, or reopening the site all had no effect — because the
           <strong>PHPSESSID cookie</strong> remained the same. This reveals the key insight: <strong>one PHPSESSID
-            allows exactly 8 attempts</strong> before it's exhausted.</p>
+            allows exactly 8 attempts</strong> before it's exhausted.
+        </p>
 
         <h3 class="step-heading">🧠 Bypass Strategy</h3>
         <p>Sending a request to <code>/reset_password.php</code> with an <strong>empty PHPSESSID</strong> generates a
@@ -327,7 +330,7 @@ if __name__ == "__main__":
 
   <!-- Footer -->
   <footer class="footer">
-    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+    <p>Built with <span class="heart">❤️</span> by afiqers © 2026</p>
   </footer>
 
   <script src="../../script.js"></script>

@@ -93,7 +93,8 @@
         <h3 class="step-heading">🐛 Vulnerability Discovery — IDOR</h3>
         <p>I noticed an <strong>IDOR (Insecure Direct Object Reference)</strong> vulnerability. Navigating to
           <code>/blog/3</code> revealed a page that had been "deleted." Inspecting the page source code revealed some
-          interesting HTML comments:</p>
+          interesting HTML comments:
+        </p>
 
         <div class="code-block">
           <div class="code-header">
@@ -111,7 +112,8 @@
         <ul class="finding-list">
           <li>The blog post was deleted because it contained personal information</li>
           <li>There's an <strong>attachment endpoint</strong> that takes a <code>file</code> parameter and an
-            <code>apiKey</code></li>
+            <code>apiKey</code>
+          </li>
           <li>The API key is hardcoded: <code>9980426e560e3661cff195b21a4493b7</code></li>
         </ul>
 
@@ -302,7 +304,7 @@ asyncio.run(exploit())</code></pre>
 
   <!-- Footer -->
   <footer class="footer">
-    <p>Built with <span class="heart">❤️</span> by Muhammad Afiq © 2025</p>
+    <p>Built with <span class="heart">❤️</span> by afiqers © 2026</p>
   </footer>
 
   <script src="../script.js"></script>
