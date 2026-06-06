@@ -68,7 +68,7 @@
 (function () {
   const el = document.getElementById('typed-text');
   if (!el) return;
-  const roles = ['Cybersecurity Student', 'CTF Player', 'Red Teamer', 'Bug Hunter'];
+  const roles = ['Cybersecurity Student', 'CTF Player'];
   let roleIdx = 0, charIdx = 0, deleting = false;
 
   function type() {
